@@ -166,10 +166,11 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS= [ # (헤더) Access-Control-Allow-Origin 에 담을 주소들
-    'http://127.0.0.1:3000', 
-    'http://localhost:3000',
-    'https://port-0-easydex-back-deploy-original-eg4e2alkn0stkb.sel4.cloudtype.app/',
-    'https://web-easydex-front-deploy-eg4e2alkn0stkb.sel4.cloudtype.app/',
+    # 'http://127.0.0.1:3000', 
+    # 'http://localhost:3000',
+    # 'https://port-0-easydex-back-deploy-original-eg4e2alkn0stkb.sel4.cloudtype.app',
+    # 'https://web-easydex-front-deploy-eg4e2alkn0stkb.sel4.cloudtype.app',
+    "*"
 ]
 
 CORS_ALLOW_HEADERS = (
