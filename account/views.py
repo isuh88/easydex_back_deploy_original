@@ -15,8 +15,8 @@ def set_token_on_response_cookie(user:User) -> Response:
     user_profile_serializer = UserProfileSerializer(user_profile)
     res = Response(user_profile_serializer.data, status=status.HTTP_200_OK)
         
-    res.set_cookie('refresh_token', value=str(token))
-    res.set_cookie('access_token', value=str(token.access_token))
+    res.set_cookie('refresh_token', value=str(token), domain='.cloudtype.app')
+    res.set_cookie('access_token', value=str(token.access_token), domain='.cloudtype.app')
     return res
 
 
@@ -48,7 +48,10 @@ class LogoutView(APIView):
         if not request.user.is_authenticated:
             return Response({"detail": "로그인 후 다시 시도해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
         RefreshToken(request.data['refresh']).blacklist()
-        return Response(status=status.HTTP_204_NO_CONTENT)      
+        res = Response(status=status.HTTP_204_NO_CONTENT) 
+        res.delete_cookie('refresh_token', domain='.cloudtype.app')
+        res.delete_cookie('access_token', domain='.cloudtype.app')
+        return res     
         
 class TokenRefreshView(APIView):
     def post(self, request):
@@ -59,7 +62,7 @@ class TokenRefreshView(APIView):
             return Response({"detail" : "로그인 후 다시 시도해주세요."}, status=status.HTTP_401_UNAUTHORIZED)
         new_access_token = str(RefreshToken(refresh_token).access_token)
         response = Response({"detail": "token refreshed"}, status=status.HTTP_200_OK)
-        response.set_cookie('access_token', value=str(new_access_token))
+        response.set_cookie('access_token', value=str(new_access_token), domain='.cloudtype.app')
         return response
     
 class UserInfoView(APIView):
